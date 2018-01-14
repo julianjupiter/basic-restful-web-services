@@ -1,0 +1,6 @@
+/contacts       GET
+/contacts       POST
+/contacts/{id}  GET
+/contacts/{id}  PUT
+/contacts/{id}  PATCH
+/contacts/{id}  DELETE
