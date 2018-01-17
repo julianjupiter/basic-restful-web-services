@@ -12,7 +12,7 @@ USE `basicrest`;
 DROP TABLE IF EXISTS `contact`;
 
 CREATE TABLE `contact` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(11) NOT NULL AUTO_INCREMENT,
   `last_name` varchar(255) NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `mobile_number` varchar(255) NOT NULL,

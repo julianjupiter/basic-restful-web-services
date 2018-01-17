@@ -8,12 +8,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.core.Response;
 
-import io.github.julianjupiter.basicrest.domain.Contact;
-import io.github.julianjupiter.basicrest.util.ErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.github.julianjupiter.basicrest.domain.Contact;
 import io.github.julianjupiter.basicrest.util.ApplicationException;
+import io.github.julianjupiter.basicrest.util.ErrorCode;
 import io.github.julianjupiter.basicrest.util.JpaUtil;
 
 public class ContactRepositoryImpl implements ContactRepository {
@@ -26,14 +26,13 @@ public class ContactRepositoryImpl implements ContactRepository {
     public List<Contact> findAll() throws ApplicationException {
         try {
             TypedQuery<Contact> query = em.createNamedQuery("Contact.findAll", Contact.class);
-
             return query.getResultList();
         } catch (Exception exception) {
-            LOGGER.error("Unable to retrieve all contacts.");
+            LOGGER.error("Unable to retrieve all contacts. {}", exception.getMessage());
             throw new ApplicationException(
                     Response.Status.FORBIDDEN.getStatusCode(),
                     ErrorCode.E4003,
-                    "Unable to retrieve all contacts.",
+                    "Unable to retrieve all contacts. " + exception.getMessage(),
                     LocalDateTime.now());
         }
     }
@@ -54,7 +53,21 @@ public class ContactRepositoryImpl implements ContactRepository {
 
     @Override
     public Contact save(Contact contact) throws ApplicationException {
-        return null;
+        try {
+            JpaUtil.beginTransaction(em);
+            em.persist(contact);
+            JpaUtil.commitTransaction(em);
+            LOGGER.info("Contact created.");
+            return contact;
+        } catch (Exception exception) {
+            JpaUtil.rollbackTransaction(em);
+            LOGGER.error("Unable to create contact.");
+            throw new ApplicationException(
+                    Response.Status.FORBIDDEN.getStatusCode(),
+                    ErrorCode.E4003,
+                    "",
+                    LocalDateTime.now());
+        }
     }
 
     @Override
@@ -69,10 +82,10 @@ public class ContactRepositoryImpl implements ContactRepository {
             JpaUtil.beginTransaction(em);
             em.remove(contact);
             JpaUtil.commitTransaction(em);
-            LOGGER.info("User deleted.");
+            LOGGER.info("Contact deleted.");
         } catch (Exception exception) {
             JpaUtil.rollbackTransaction(em);
-            LOGGER.error("User not deleted.");
+            LOGGER.error("Unable to delete contact with ID {}.", id);
             throw new ApplicationException(
                     Response.Status.FORBIDDEN.getStatusCode(),
                     ErrorCode.E4003,

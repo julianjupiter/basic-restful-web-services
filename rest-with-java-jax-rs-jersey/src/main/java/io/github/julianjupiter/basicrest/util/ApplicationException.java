@@ -7,7 +7,7 @@ public class ApplicationException extends Exception {
     private int status;
     private String code;
     private String message;
-    private LocalDateTime timestamp;
+    private transient LocalDateTime timestamp;
 
     public ApplicationException(int status, String code, String message, LocalDateTime timestamp) {
         this.status = status;

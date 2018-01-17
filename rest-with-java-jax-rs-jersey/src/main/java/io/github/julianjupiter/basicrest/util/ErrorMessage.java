@@ -7,7 +7,7 @@ public class ErrorMessage implements Serializable {
     private static final long serialVersionUID = 1442698378687760355L;
     private String code;
     private String message;
-    private LocalDateTime timestamp;
+    private transient LocalDateTime timestamp;
 
     public ErrorMessage() {
 

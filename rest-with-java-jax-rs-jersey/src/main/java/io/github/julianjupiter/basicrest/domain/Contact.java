@@ -3,7 +3,13 @@ package io.github.julianjupiter.basicrest.domain;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "contact")
@@ -12,7 +18,7 @@ public class Contact implements Serializable {
 
 	private static final long serialVersionUID = -7121942345928123053L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	@Column(name = "last_name")
 	private String lastName;
@@ -25,7 +31,7 @@ public class Contact implements Serializable {
 	@Column(name = "address")
 	private String address;
 	@Column(name = "created_at")
-	private transient LocalDateTime createdAt;
+	private LocalDateTime createdAt;
 
 	public long getId() {
 		return id;

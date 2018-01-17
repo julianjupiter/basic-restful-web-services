@@ -13,13 +13,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import io.github.julianjupiter.basicrest.domain.Contact;
-import io.github.julianjupiter.basicrest.service.ContactService;
-import io.github.julianjupiter.basicrest.util.ErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.github.julianjupiter.basicrest.domain.Contact;
+import io.github.julianjupiter.basicrest.service.ContactService;
 import io.github.julianjupiter.basicrest.util.ApplicationException;
+import io.github.julianjupiter.basicrest.util.ErrorCode;
 
 @Path("/contacts")
 @Consumes(MediaType.APPLICATION_JSON)
