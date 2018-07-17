@@ -4,12 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -77,4 +72,39 @@ public class ContactResource {
 		}
 	}
 	
+	@DELETE
+	@Path("{id}")
+	public Response delete(@PathParam("id") long id) throws ApplicationException {
+		Contact contact = this.contactService.findById(id);
+		
+		if (null != contact) {
+			this.contactService.delete(id);
+			
+			return Response
+					.status(Response.Status.NO_CONTENT)
+					.build();
+		} else {
+			throw new ApplicationException(
+					Response.Status.BAD_REQUEST.getStatusCode(), 
+					ErrorCode.E4001,
+					"Resource with ID " + id + " does not exist.",
+					LocalDateTime.now());
+		}
+	}
+
+	@PATCH
+	@Path("{id}")
+	public Response update(@PathParam("id") long id, Contact contact) throws ApplicationException {
+		Contact existingContact = this.contactService.findById(id);
+
+		if (null == existingContact) {
+			throw new ApplicationException(
+					Response.Status.BAD_REQUEST.getStatusCode(),
+					ErrorCode.E4001,
+					"Resource with ID " + id + " does not exist.",
+					LocalDateTime.now());
+		}
+
+		return null;
+	}
 }

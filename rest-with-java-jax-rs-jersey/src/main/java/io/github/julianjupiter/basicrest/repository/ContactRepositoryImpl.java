@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.core.Response;
 
@@ -77,7 +78,7 @@ public class ContactRepositoryImpl implements ContactRepository {
 
     @Override
     public void delete(long id) throws ApplicationException {
-        Contact contact = em.find(Contact.class, id);
+        Contact contact = this.findById(id);
         try {
             JpaUtil.beginTransaction(em);
             em.remove(contact);
@@ -89,7 +90,7 @@ public class ContactRepositoryImpl implements ContactRepository {
             throw new ApplicationException(
                     Response.Status.FORBIDDEN.getStatusCode(),
                     ErrorCode.E4003,
-                    "",
+                    "Unable to delete contact with ID " + id + ".",
                     LocalDateTime.now());
         }
     }
